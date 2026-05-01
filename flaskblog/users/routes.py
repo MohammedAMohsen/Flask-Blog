@@ -3,6 +3,7 @@ from flaskblog.models import User, Post
 from flask_login import login_user, current_user, logout_user, login_required
 from flask import render_template, url_for, flash, redirect, request, Blueprint
 from flaskblog.users.forms import RegistrationForm, LoginForm, UpdateAccountForm, RequestResetForm, ResetPasswordForm
+from flaskblog.posts.forms import PostForm
 from flaskblog.users.utils import save_picture, send_reset_email
 
 
@@ -48,28 +49,26 @@ def logout():
 @users.route('/account', methods=['GET', 'POST'])
 @login_required
 def account():
-    form_user = UpdateAccountForm()
-    if form_user.validate_on_submit():
-        if form_user.picture.data:
-            current_user.image_file = save_picture(form_user.picture.data)
-        current_user.username = form_user.username.data
-        current_user.email = form_user.email.data
+    form = UpdateAccountForm()
+    if form.validate_on_submit():
+        if form.picture.data:
+            current_user.image_file = save_picture(form.picture.data)
+        current_user.username = form.username.data
+        current_user.email = form.email.data
+        if form.new_password.data:
+            if bcrypt.check_password_hash(current_user.password, form.old_password.data):
+                current_user.password = bcrypt.generate_password_hash(form.new_password.data).decode('utf-8')
+            else:
+                flash('Error in old password','danger')
+                return redirect(url_for('users.account'))
         db.session.commit()
         flash("Your account has been update!", 'success')
         return redirect(url_for('users.account'))
     elif request.method == 'GET':
-        form_user.username.data = current_user.username
-        form_user.email.data = current_user.email
+        form.username.data = current_user.username
+        form.email.data = current_user.email
     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
-    return render_template('account.html', title='account', image_file=image_file, form=form_user)
-
-
-@users.route('/user/<string:username>')
-def user_posts(username):
-    page = request.args.get('page', 1, type=int)
-    user = User.query.filter_by(username=username).first_or_404()
-    posts = Post.query.filter_by(author=user).order_by(Post.date_posted.desc()).paginate(per_page=5, page=page)
-    return render_template('user_posts.html', title=user.username, posts=posts, user=user)
+    return render_template('account.html', title='account', image_file=image_file, form=form)
 
 
 @users.route('/reset_password',  methods=['GET', 'POST'])
@@ -101,3 +100,22 @@ def reset_token(token):
         flash(f"Your password has been updated! You are now able to Log in", 'success')
         return redirect(url_for('users.login'))
     return render_template('reset_token.html', title='Reser Password', form=form)
+
+@users.route('/profile/<string:username>',  methods=['GET', 'POST'])
+def profile(username):
+    form = PostForm()
+    if form.validate_on_submit():
+        post = Post(title=form.title.data, content=form.content.data, author=current_user)
+        db.session.add(post)
+        db.session.commit()
+        flash('Your post has been created!', 'success')
+        return redirect(url_for('main.home'))
+    page = request.args.get('page', 1, type=int)
+    user = User.query.filter_by(username=username).first_or_404()
+    posts = Post.query.filter_by(author=user).order_by(Post.date_posted.desc()).paginate(per_page=5, page=page)
+    return render_template('profile.html', title=user.username, posts=posts, user=user, form=form, legend='New Post')
+
+
+@users.route("/user/<string:username>")
+def legacy_user(username):
+    return redirect(url_for('users.profile', username=username))

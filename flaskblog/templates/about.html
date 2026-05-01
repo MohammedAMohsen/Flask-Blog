@@ -1,4 +1,28 @@
-{% extends 'layout.html' %}
+{% extends "layout.html" %}
 {% block content %}
-    <h1>About Page</h1>
-{% endblock %}
+
+<div class="content-section about-page">
+
+    <h1 class="about-title">About This Blog</h1>
+
+    <p class="about-text">
+        Welcome to our Flask Blog platform. This website was built as a learning project using Python Flask,
+        SQLAlchemy, and Flask-Login.
+    </p>
+
+    <p class="about-text">
+        Here users can create accounts, publish posts, view other users' profiles, and interact with content in a simple and clean way.
+    </p>
+
+    <p class="about-text">
+        This project demonstrates core backend concepts such as authentication, database relationships,
+        and application structure using Blueprints.
+    </p>
+
+    <div class="about-footer">
+        <p>Built with ❤️ using Flask</p>
+    </div>
+
+</div>
+
+{% endblock content %}
