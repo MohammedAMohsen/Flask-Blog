@@ -36,8 +36,10 @@ cp .env.example .env
 ```
 Then fill in your own configuration values:
 
-- EMAIL_USER=your_email_here 
-- EMAIL_PASS=your_password_here
-- SECRET_KEY=your_secret_key_here
-- DATABASE_USER=your_database_user
-- DATABASE_PASS=your_database_password
+```text
+EMAIL_USER=your_email_here 
+EMAIL_PASS=your_password_here
+SECRET_KEY=your_secret_key_here
+DATABASE_USER=your_database_user
+DATABASE_PASS=your_database_password
+```
