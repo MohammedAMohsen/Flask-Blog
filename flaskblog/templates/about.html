@@ -1,28 +1,199 @@
-{% extends "layout.html" %}
-{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Flask Blog</title>
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 
-<div class="content-section about-page">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            margin: 0;
+            background-color: #fafafa;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            color: #444;
+        }
+        .site-header .navbar {
+            background-color: #5f788a;
+        }
 
-    <h1 class="about-title">About This Blog</h1>
+        .navbar-brand,
+        .nav-link {
+            color: #ffffff !important;
+        }
 
-    <p class="about-text">
-        Welcome to our Flask Blog platform. This website was built as a learning project using Python Flask,
-        SQLAlchemy, and Flask-Login.
-    </p>
+        .nav-link:hover {
+            opacity: 0.85;
+        }
+        .main-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 60px 20px;
+        }
+        .hero-box {
+            max-width: 850px;
+        }
+        .flask-logo {
+            width: 180px;
+            margin-bottom: 30px;
+            opacity: 0.95;
+            align-items: center;
+        }
+        .title {
+            font-size: 2.7rem;
+            font-weight: 300;
+            margin-bottom: 18px;
+            color: #2c3e50;
+        }
+        .subtitle {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 25px;
+            line-height: 1.8;
+        }
+        .description {
+            font-size: 1rem;
+            color: #777;
+            max-width: 720px;
+            margin: auto;
+            line-height: 1.9;
+        }
+        .footer-links {
+            border-top: 1px solid #ddd;
+            padding: 35px 20px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 35px;
+            background-color: #f1f1f1;
+        }
+        .footer-card {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            max-width: 280px;
+            text-align: left;
+        }
+        .footer-icon {
+            font-size: 1.8rem;
+        }
+        .footer-card h3 {
+            font-size: 1.2rem;
+            color: #2c3e50;
+            margin-bottom: 6px;
+        }
+        .footer-card p {
+            color: #777;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2rem;
+            }
 
-    <p class="about-text">
-        Here users can create accounts, publish posts, view other users' profiles, and interact with content in a simple and clean way.
-    </p>
+            .subtitle {
+                font-size: 1rem;
+            }
 
-    <p class="about-text">
-        This project demonstrates core backend concepts such as authentication, database relationships,
-        and application structure using Blueprints.
-    </p>
+            .footer-links {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top">
+            <div class="container">
+                <a class="navbar-brand mr-4" href="{{ url_for('main.home') }}">
+                    Flask Blog
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse"
+                        data-target="#navbarToggle">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarToggle">
+                    <div class="navbar-nav mr-auto">
+                        <a class="nav-item nav-link" href="{{ url_for('main.home') }}">
+                            Home
+                        </a>
+                        <a class="nav-item nav-link active" href="{{ url_for('main.about') }}">
+                            About
+                        </a>
+                    </div>
+                    <div class="navbar-nav">
+                        <a class="nav-item nav-link" href="{{ url_for('users.login') }}">
+                            Login
+                        </a>
+                        <a class="nav-item nav-link" href="{{ url_for('users.register') }}">
+                            Register
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main class="main-container" style="margin-top: 70px;">
+        <div class="hero-box">
 
-    <div class="about-footer">
-        <p>Built with ❤️ using Flask</p>
-    </div>
-
-</div>
-
-{% endblock content %}
+            <img src="{{ url_for('static', filename='profile_pics/flask logo.png') }}"
+                 alt="Flask Logo"
+                 class="flask-logo">
+            <h1 class="title">Welcome to Flask Blog</h1>
+            <p class="subtitle">
+                Your Flask Blog platform is running successfully!<br>
+                A modern web application built with Python Flask.
+            </p>
+            <p class="description">
+                This project demonstrates user authentication, profile systems,
+                secure password reset, blog post creation, profile customization,
+                and scalable architecture using Blueprints and Configuration classes.
+            </p>
+        </div>
+    </main>
+    <section class="footer-links">
+        <div class="footer-card">
+            <div class="footer-icon">📘</div>
+            <div>
+                <h3>Project Purpose</h3>
+                <p>
+                    Practice real backend development with Flask,
+                    databases, authentication, and deployment-ready structure.
+                </p>
+            </div>
+        </div>
+        <div class="footer-card">
+            <div class="footer-icon">⚙️</div>
+            <div>
+                <h3>Core Features</h3>
+                <p>
+                    Accounts, profiles, image uploads,
+                    blog posts, password reset, and secure routing.
+                </p>
+            </div>
+        </div>
+        <div class="footer-card">
+            <div class="footer-icon">🚀</div>
+            <div>
+                <h3>Next Journey</h3>
+                <p>
+                    Expanding from Flask fundamentals
+                    toward Django and larger production systems.
+                </p>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

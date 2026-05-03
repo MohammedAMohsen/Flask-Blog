@@ -1,21 +1,39 @@
 {% extends 'layout.html' %}
 {% block content %}
-    <div class="content-section profile-header">
-        <div class="profile-cover"></div>
-        <div class="profile-overlay">
-            <img class="rounded-circle account-img profile-avatar" src="{{ url_for('static', filename='profile_pics/' + user.image_file) }}">
-            <div class="profile-info">
-            <div class="mb-4">
-                <h2>{{ user.username }}</h2>
-                <p>{{ user.email }}</p>
-            </div>
-                <p style="font-size: 16px;">{{ posts.total }} Posts by {{ user.username }}</p>
-                {% if not current_user.is_authenticated or not current_user.id == user.id %}
+    <div class="profile-header-card">
+    <div class="profile-cover"></div>
+    <div class="profile-overlay"></div>
+    <div class="profile-header-content">
+        <div class="profile-image-wrapper">
+            <img class="profile-avatar"
+                 src="{{ url_for('static', filename='profile_pics/' + user.image_file) }}"
+                 alt="{{ user.username }}">
+        </div>
+        <div class="profile-details">
+            <h1 class="profile-name">{{ user.username }}</h1>
+            <p class="profile-email">{{ user.email }}</p>
+            <div class="profile-bottom-row">
+                <div class="profile-stats">
+                    <div class="stat-box">
+                        <span class="stat-number">{{ posts.total }}</span>
+                        <span class="stat-label">Posts</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-number">1.2K</span>
+                        <span class="stat-label">Followers</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-number">320</span>
+                        <span class="stat-label">Following</span>
+                    </div>
+                </div>
+                {% if current_user != user %}
                     <button class="follow-btn">+ Follow</button>
                 {% endif %}
             </div>
         </div>
     </div>
+</div>
     {% if current_user.is_authenticated and current_user.id == user.id %}
         <div class="content-section">
         <form method="POST" action="">
